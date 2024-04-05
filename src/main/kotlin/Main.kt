@@ -152,3 +152,55 @@ fun leerFichero03(rutaFichero: String) {
 
     text.forEach { println(it) }
 }
+
+fun leerFicherosGrandes01(rutaFichero: String) {
+    // Rendimiento y uso de memoria: Si bien readLines() es muy conveniente para leer archivos pequeños a medianos,
+    // puede no ser la mejor opción para archivos muy grandes.
+    // Esto se debe a que readLines() carga todas las líneas del archivo en la memoria simultáneamente, lo que podría
+    // llevar a un "OutOfMemoryError" si el archivo es demasiado grande.
+    // En tales casos, puede ser más apropiado leer el archivo línea por línea manualmente usando un BufferedReader,
+    // lo que permite procesar cada línea individualmente y minimizar el uso de memoria.
+
+    val file = File(rutaFichero)
+    val text: MutableList<String> = mutableListOf()
+
+    try {
+        file.bufferedReader().use { br ->
+            do {
+                val line: String? = br.readLine()
+                if (line != null) {
+                    text.add(line)
+                }
+            } while (line != null)
+        }
+    }
+    catch (e: IOException) {
+        println("Ocurrió un error al leer el archivo: ${e.message}")
+    }
+    catch (e: Exception) {
+        println("Ocurrió un error inesperado: ${e.message}")
+    }
+}
+
+fun leerFicherosGrandes02(rutaFichero: String) {
+    //Otra forma de hacer lo mismo...
+
+    val file = File(rutaFichero)
+    val text: MutableList<String> = mutableListOf()
+
+    try {
+        file.bufferedReader().use { br ->
+            var line: String?
+            while (br.readLine().also { line = it } != null) {
+                // Procesa cada línea individualmente
+                line?.let { text.add(it) }
+            }
+        }
+    }
+    catch (e: IOException) {
+        println("Ocurrió un error al leer el archivo: ${e.message}")
+    }
+    catch (e: Exception) {
+        println("Ocurrió un error inesperado: ${e.message}")
+    }
+}

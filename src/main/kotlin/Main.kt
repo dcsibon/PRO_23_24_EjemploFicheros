@@ -12,7 +12,7 @@ La anotación @JvmStatic es específica para interoperar con Java.
 
 Kotlin tiene su propio sistema de clases y objetos, pero cuando queremos asegurarnos de que nuestro código Kotlin sea
 fácilmente accesible desde código Java, especialmente en casos donde necesitemos definir un método main o cualquier
-método estático, utilizas @JvmStatic.
+método estático, utilizamos @JvmStatic.
 
 En el contexto de Java, los métodos estáticos son aquellos que puedes llamar en una clase sin necesidad de crear una
 instancia de dicha clase. Kotlin no tiene métodos estáticos de forma nativa porque usa objetos para lograr el mismo

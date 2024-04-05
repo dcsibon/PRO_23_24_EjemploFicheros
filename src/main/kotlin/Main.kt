@@ -134,6 +134,12 @@ fun leerFichero03(rutaFichero: String) {
     // líneas de un archivo es la opción más recomendable por su simplicidad y seguridad.
     // Este enfoque es conciso, legible y maneja automáticamente los recursos subyacentes, cerrando el flujo de
     // entrada una vez que todas las líneas han sido leídas, lo cual simplifica el manejo de errores y recursos.
+    //
+    // Por lo tanto, cuando utilizamos readLines():
+    // 1- Se abre un flujo de entrada: Internamente, readLines() abre un flujo de entrada para el archivo especificado.
+    // 2- Se leen los datos: Lee todas las líneas del archivo, las almacena en una lista y retorna dicha lista.
+    // 3- Se cierra el flujo: Cierra el flujo de entrada automáticamente una vez que todas las líneas han sido leídas o
+    //    si ocurre una excepción durante el proceso de lectura.
 
     val file = File(rutaFichero)
 
@@ -196,6 +202,22 @@ fun leerFicherosGrandes02(rutaFichero: String) {
                 line?.let { text.add(it) }
             }
         }
+    }
+    catch (e: IOException) {
+        println("Ocurrió un error al leer el archivo: ${e.message}")
+    }
+    catch (e: Exception) {
+        println("Ocurrió un error inesperado: ${e.message}")
+    }
+}
+
+fun leerFicherosGrandes03(rutaFichero: String) {
+    //Otra forma de hacer lo mismo, por ejemplo para mostrar el contenido de un fichero.
+
+    val file = File(rutaFichero)
+
+    try {
+        file.forEachLine { println(it) }
     }
     catch (e: IOException) {
         println("Ocurrió un error al leer el archivo: ${e.message}")

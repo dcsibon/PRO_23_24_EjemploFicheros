@@ -2,6 +2,8 @@ package org.ejemploficheros
 
 import kotlin.jvm.JvmStatic
 import java.io.File
+import java.io.IOException
+import java.util.*
 
 /*
 1. Anotación @JvmStatic.
@@ -74,4 +76,79 @@ object PruebasArchivos {
 
 fun main() {
     println("Hello World!")
+}
+
+fun leerFichero01(rutaFichero: String) {
+    // En este fragmento de código, use { ... } asegura que el BufferedReader se cierre después de ejecutar el
+    // bloque de código proporcionado, que en este caso es leer todas las líneas del archivo y almacenarlas en text.
+    // Esto elimina la necesidad de cerrar explícitamente el flujo de datos de entrada y maneja adecuadamente las
+    // excepciones, haciendo que el código sea más seguro y limpio.
+    // * Usar el bloque "use" cierra el recurso automáticamente incluso si se lanza una excepción.
+
+    val file = File(rutaFichero)
+    val text: List<String>
+
+    try {
+        text = file.bufferedReader().use { it.readLines() }
+    } catch (e: IOException) {
+        // Manejo de IOException para errores de I/O
+        println("Error al leer el archivo: ${e.message}")
+        return
+    } catch (e: Exception) {
+        // Manejo de otras excepciones generales
+        println("Error inesperado: ${e.message}")
+        return
+    }
+
+    text.forEach { println(it) }
+}
+
+fun leerFichero02(rutaFichero: String) {
+    // Si no usamos el bloque "use" use y manejamos el BufferedReader directamente, deberíamos cerrar el flujo
+    // manualmente en un bloque "finally" para asegurarnos de que se cierre correctamente incluso si ocurre una
+    // excepción.
+
+    val file = File(rutaFichero)
+    val bufferedReader = file.bufferedReader()
+    val text: List<String> =
+        try {
+            bufferedReader.readLines()
+        }
+        catch (e: IOException) {
+            println("Ocurrió un error al leer el archivo: ${e.message}")
+            emptyList() // Retorna una lista vacía en caso de error
+        }
+        catch (e: Exception) {
+            println("Ocurrió un error inesperado: ${e.message}")
+            emptyList()
+        }
+        finally {
+            bufferedReader.close()
+        }
+
+    text.forEach { println(it) }
+}
+
+fun leerFichero03(rutaFichero: String) {
+    // En la mayoría de los casos, usar la abstracción proporcionada por Kotlin con readLines() para leer todas las
+    // líneas de un archivo es la opción más recomendable por su simplicidad y seguridad.
+    // Este enfoque es conciso, legible y maneja automáticamente los recursos subyacentes, cerrando el flujo de
+    // entrada una vez que todas las líneas han sido leídas, lo cual simplifica el manejo de errores y recursos.
+
+    val file = File(rutaFichero)
+
+    val text: List<String> =
+        try {
+            file.readLines()
+        }
+        catch (e: IOException) {
+            println("Ocurrió un error al leer el archivo: ${e.message}")
+            emptyList() // Retorna una lista vacía en caso de error
+        }
+        catch (e: Exception) {
+            println("Ocurrió un error inesperado: ${e.message}")
+            emptyList()
+        }
+
+    text.forEach { println(it) }
 }
